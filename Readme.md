@@ -1,0 +1,1 @@
+Hello everyone! This repo. contains all the things I have learned in python. I will always be updating it quite often as i keep on learning.
