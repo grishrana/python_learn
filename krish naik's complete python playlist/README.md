@@ -1,0 +1,2 @@
+This folder contains what I have learnt from [Krish Naik's complete python course](https://www.youtube.com/playlist?list=PLZoTAELRMXVNUL99R4bDlVYsncUNvwUBB).<br>
+Also I am following his [Roadmap](https://github.com/krishnaik06/Perfect-Roadmap-To-Learn-Data-Science-In-2024) For Data Science.
