@@ -1,35 +1,87 @@
-from flask import Flask, render_template,redirect ,url_for
+import os
+import uuid
+from flask import (
+    Flask,
+    jsonify,
+    render_template,
+    request,
+    Response,
+    send_from_directory,
+)
+import pandas as pd
 
-app = Flask(__name__,template_folder='templates')
+app = Flask(__name__, template_folder="templates")
 
-@app.route('/')
+
+@app.route("/", methods=["GET", "POST"])  # pyright: ignore
 def index():
-    myvalue="Grish Rana"
-    myresult = 399
-    mylist = [10,20,30]
-    return render_template('index.html',mylist=mylist)
+    if request.method == "GET":
+        return render_template("index.html")
 
-@app.route('/otherpage')
-def otherpage():
-    some_text="Hello World"
-    return render_template('otherpage.html',some_text=some_text)
+    elif request.method == "POST":
+        username = request.form.get("username")
+        password = request.form["password"]
+        if username == "grishrana" and password == "password":
+            return "Sucess"
+        else:
+            return "Failure"
 
-@app.route('/redirectToOtherpage')
-def redirectToOtherpage():
-    return redirect(url_for('otherpage'))
+    else:
+        return 0
 
 
-@app.template_filter('reverse_string')
-def reverse_string(s):
-    return s[::-1]
+@app.route("/file_upload", methods=["POST"])  # pyright: ignore
+def file_upload():
+    file = request.files["file"]
+    if file.content_type == "text/plain":
+        return file.read()
+    else:
+        df = pd.read_excel(file)
+        return df.to_html()
 
-@app.template_filter('repeat')
-def repeat(s,times=2):
-    return s*times
 
-@app.template_filter('alternate_case')
-def alternate_case(s):
-    return ''.join([c.upper() if i%2 == 0 else c.lower() for i,c in enumerate(s)])
+@app.route("/convert_csv", methods=["POST"])  # pyright: ignore
+def convert_csv():
+    file = request.files["file"]
+    df = pd.read_excel(file)
+    response = Response(
+        df.to_csv(index=False),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=result.csv"},
+    )
+    return response
 
-if(__name__ == "__main__"):
+
+@app.route("/convert_csv_two", methods=["POST"])  # pyright: ignore
+def convert_csv_two():
+    file = request.files["file"]
+    df = pd.read_excel(file)
+
+    if not os.path.exists("Downloads"):
+        os.makedirs("Downloads")
+
+    filename = f"{uuid.uuid4()}.csv"
+    df.to_csv(os.path.join("Downloads", filename))
+
+    return render_template("downloadpage.html", filename=filename)
+
+
+@app.route("/download/<filename>")  # pyright: ignore
+def download(filename):
+    return send_from_directory("Downloads", filename, download_name="result.csv")
+
+
+@app.route("/handle_post", methods=["POST"])  # pyright: ignore
+def handle_post():
+    data = request.get_json()
+    greeting = data.get("greeting")
+    name = data.get("name")
+
+    with open("file.txt", "w") as f:
+        f.write(f"{greeting}, {name}")
+
+    return jsonify({"message": "Successfully written!"})
+
+
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5555, debug=True)
