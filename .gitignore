@@ -6,3 +6,4 @@ fileeditor.py
 .ipynb_checkpoints
 pygame_learn
 __pycache__
+playingWithFlask/
