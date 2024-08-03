@@ -3,12 +3,18 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Default Title{% endblock %}</title>
+    <title>
+      {% block title %}Default Title{% endblock title %}
+    </title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+   <!-- Override to use different css -->
+   {% block extraCSS%}
+      <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+      {% endblock extraCSS %}
   </head>
   <body>
     {% block content %}
     <h1>Default Content</h1>
     {% endblock %}
-  
   </body>
 </html>
