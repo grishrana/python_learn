@@ -1,0 +1,64 @@
+body{
+  margin: 0px;
+  background-color: #fee;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+header{
+  background-color: #6e79e1;
+  align-items: center; 
+  justify-content: center;
+  padding: 10px;
+  display: flex;
+}
+
+header h1{
+  margin-left: auto;
+}
+
+.buttons{
+  margin-left:auto;
+}
+
+#login, #signUp{
+  background-color: #0c0;
+  color: #eee;
+  font-weight: bold;
+  padding:10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  transition: background-color 0.5s ease;
+}
+
+#login:hover, #signUp:hover{
+  background-color:#050;
+}
+
+.container{
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.container button{
+  margin: 5px;
+  background-color: #0c0;
+  color: #eee;
+  font-weight: bold;
+  padding:10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  transition: background-color 0.5s ease;
+}
+
+.container button:hover{
+  background-color: #050;
+}
+
+#file{
+  margin: 5px;
+  padding: 10px;
+  background-color: #FFF;
+  font-style: italic;
+}

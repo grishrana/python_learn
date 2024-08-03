@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Index Page
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/index.css')}}">
+{% endblock css %}
+
+{% block header %}
+<h1>File Converter</h1>
+<div class="buttons">
+  <button id="login">Login</button>
+  <button id="signUp">Sign Up</button>
+</div>
+{% endblock header %}
+
+{% block main %}
+<div class="container">
+  <input type="file" id="file" accept=".xls,.xlsx" required>
+  <button id="submit">Convert</button>
+  <button id="downloadBtn">Download</button> 
+</div>
+<center><p id="result"></p></center>
+{% endblock main %}
+
+{% block footer %}
+
+{% endblock footer %}
+
+{% block js %}
+<script src="{{url_for('static',filename='js/index.js')}}">
+</script>
+{% endblock js %}

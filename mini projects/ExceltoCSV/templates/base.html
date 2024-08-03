@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Default title{% endblock title %}</title>
+    {% block css %}
+    
+    {% endblock css %}
+    <script>
+      const uploadUrl = "{{ url_for('upload') }}"
+      const downloadUrl = "{{ url_for('download', filename=filename) }}"
+    </script>
+  </head>
+
+  <body>
+
+    <header>
+      {% block header %}
+      
+      {% endblock header %}
+    </header>
+
+    <main>
+    {% block main %}
+      <h1>Default Heading</h1>
+    {%endblock main%}
+    </main>
+
+    <footer>
+      {% block footer %}
+      
+      {% endblock footer %}
+    </footer>
+
+    {% block js %}
+    
+    {% endblock js %}
+  </body>
+</html>
