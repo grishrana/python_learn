@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 
 {% block title %}
+Cookies Sessions and Message Flashing
 {% endblock %}
 
 {% block content %}
+
 <h1>Hello World</h1>
-<img src="{{url_for('static',filename='images/pulogo.png')}}" alt="logo">
+
+<p>{{ message }}</p>
+
+<a href="{{ url_for('setSession') }}">Set Session</a>
+<a href="{{ url_for('getData') }}">See Session</a>
+<a href="{{ url_for('destroySession') }}">Destroy Session</a>
+<hr>
+<a href="{{url_for('setCookie')}}">Set Cookie</a>
+<a href="{{url_for('getCookie')}}">Get Cookie</a>
+<a href="{{url_for('destroyCookie')}}">Destroy Cookie</a>
+<a href="{{url_for('login')}}">Login Page</a>
 {% endblock content %}

@@ -13,6 +13,16 @@
       {% endblock extraCSS %}
   </head>
   <body>
+   <!-- get_flashed_messages() is flask function that retrieves the flashed messages which returns a list -->
+    {% with messages= get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
     {% block content %}
     <h1>Default Content</h1>
     {% endblock %}
