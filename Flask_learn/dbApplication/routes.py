@@ -1,39 +1,58 @@
-from flask import render_template, request
-from models import Person
+from flask import redirect, render_template, request, url_for
+from flask_login import login_user, logout_user, current_user, login_required
+from flask_login.login_manager import user_needs_refresh
+from sqlalchemy.sql.operators import is_natural_self_precedent
+from models import User
 
 
-def register_routes(app, db):
+def register_routes(app, db, bcrypt):
 
-    @app.route("/", methods=["GET", "POST"])  # pyright: ignore
+    @app.route("/")  # pyright: ignore
     def index():
+        return render_template("index.html")
 
+    @app.route("/signup", methods=["GET", "POST"])
+    def signup():
         if request.method == "GET":
-            people = Person.query.all()
-            return render_template("index.html", people=people)
+            return render_template("signup.html")
 
         elif request.method == "POST":
-            name = request.form.get("name")
-            age = int(request.form.get("age"))  # pyright: ignore
-            job = request.form.get("job")
+            username = request.form.get("username")
+            password = request.form.get("password")
 
-            person = Person(name=name, age=age, job=job)  # pyright: ignore
+            hashed_password = bcrypt.generate_password_hash(password)
 
-            db.session.add(person)
+            user = User(username=username, password=hashed_password)  # pyright: ignore
+
+            db.session.add(user)
             db.session.commit()
 
-            people = Person.query.all()
-            return render_template("index.html", people=people)
+            return redirect(url_for("index"))
 
-    @app.route("/delete/<pid>", methods=["DELETE"])
-    def delete(pid):
-        Person.query.filter(Person.pid == pid).delete()
+    @app.route("/login", methods=["GET", "POST"])
+    def login():
+        if request.method == "GET":
+            return render_template("login.html")
 
-        db.session.commit()
+        elif request.method == "POST":
+            username = request.form.get("username")
+            password = request.form.get("password")
 
-        people = Person.query.all()
-        return render_template("index.html", people=people)
+            user = User.query.filter(User.username == username).first()
 
-    @app.route("/details/<pid>")
-    def detail(pid):
-        person = Person.query.filter(Person.pid == pid).first()
-        return render_template("detail.html", person=person)
+            if bcrypt.check_password_hash(user.password, password):  # pyright: ignore
+                login_user(user)
+                return redirect(url_for("index"))
+
+            else:
+                return "Failed"
+
+    @app.route("/logout")
+    def logout():
+        logout_user()
+        return redirect(url_for("index"))
+
+    @app.route("/secret")
+    @login_required
+    def secret():
+        return "Secret Message"

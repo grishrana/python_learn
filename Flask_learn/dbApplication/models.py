@@ -1,13 +1,22 @@
+from flask_login import UserMixin  # pyright: ignore
 from app import db
 
 
-class Person(db.Model):
-    __tablename__ = "people"
+class User(db.Model, UserMixin):
+    __tablename__ = "users"
 
-    pid = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, nullable=False)
-    age = db.Column(db.Integer)
-    job = db.Column(db.Text)
+    uid = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    role = db.Column(db.String)
+    description = db.Column(db.String)
+
+    # def __init__(self, username, password):
+    #     self.username = username
+    #     self.password = password
 
     def __repr__(self) -> str:
-        return f"Person(Name: {self.name}, Age: {self.age})"
+        return f"<User: {self.username}, Role: {self.role}>"
+
+    def get_id(self):
+        return self.uid
